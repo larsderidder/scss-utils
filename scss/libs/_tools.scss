@@ -1,0 +1,33 @@
+/**
+* Intrinsic ratios
+*/
+@mixin intrinsic-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: " ";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > .intrinsic-ratio--stretch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+// 1:1
+$intrinsic-ratios: (
+  '1-1': (1, 1),
+  '4-3': (4, 3),
+  '16-9': (16, 9),
+  '16-6': (16, 6)
+);
+
+@each $ratio-key, $ratio-pair in $intrinsic-ratios {
+  .intrinsic-ratio--#{$ratio-key} {
+    @include intrinsic-ratio(nth($ratio-pair, 1), nth($ratio-pair, 2))
+  }
+}

@@ -1,0 +1,29 @@
+/*
+ *  z-index mixin
+ *
+ *  Gebruik:
+ *
+ *  @include z-index(navigation);
+ */
+
+$z-index: (
+  navigation-close: 175,
+  navigation-mobile:150,
+  lotmapfilters:    101,
+  navigation:       100,
+  slider-content:   75,
+  slider:           50,
+  overlay-content:  25,
+  overlay:          10,
+  default:          1
+);
+
+@function z-index($key) {
+  $value: map-get($z-index, $key);
+  @return $value;
+}
+
+@mixin z-index($key) {
+  $layer: z-index($key);
+  z-index: $layer;
+}

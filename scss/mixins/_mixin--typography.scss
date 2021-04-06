@@ -1,0 +1,75 @@
+@mixin font-size($fs-map, $fs-breakpoints: $breakpoints) {
+  @each $scale, $size in $fs-map {
+    @if $scale == null {
+      font-size: $size;
+    }
+    @else {
+      // If $size is a key that exists in $fs-breakpoints, use the value
+      $screen: $scale;
+      @if map-has-key($fs-breakpoints, $screen) {
+        $screen: map-get($fs-breakpoints, $screen);
+      }
+      @media screen and (min-width: $screen) {
+        font-size: $size;
+      }
+    }
+  }
+}
+@function breakpoint($breakpoint-name) {
+  $bp: map-get($breakpoints, $breakpoint-name);
+
+  @if $bp {
+    @return $bp;
+  }
+
+  @warn "Breakpoint '#{$breakpoint-name}' not found in $breakpoints";
+}
+
+@function text-properties-for($text-size, $breakpoint-name) {
+  $breakpoints-map: text-breakpoints-for($text-size);
+  $properties: map-get($breakpoints-map, $breakpoint-name);
+
+  @if $properties {
+    @return $properties;
+  }
+
+  @warn "Breakpoint '#{$breakpoint-name}' for text size '#{$text-size}' was not found";
+}
+
+// lib/mixins/_responsive.scss
+@mixin respond-above($breakpoint-name) {
+  $bp: breakpoint($breakpoint-name);
+
+  @if $bp {
+    @media screen and (min-width: $bp) {
+      @content;
+    }
+  }
+}
+
+// lib/mixins/_typography.scss
+@mixin text-size($text-size, $breakpoint-name: 'small') {
+  $props: text-properties-for($text-size, $breakpoint-name);
+
+  @if $props {
+    font-size: map-get($props, 'font-size');
+    line-height: map-get($props, 'line-height');
+  }
+}
+
+@mixin responsive-text-size($text-size, $default-breakpoint: 'small') {
+  @include text-size($text-size, $default-breakpoint);
+
+  $bp-map: text-breakpoints-for($text-size);
+  $bp-keys: map-keys($bp-map);
+
+  @each $bp-name in $bp-keys {
+    @if $bp-name != $default-breakpoint {
+      @include respond-above($bp-name) {
+        @include text-size($text-size, $bp-name);
+      }
+    }
+  }
+}
+
+

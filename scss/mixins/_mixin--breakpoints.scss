@@ -1,0 +1,18 @@
+/*
+ *  Breakpoints
+ */
+
+$breakpoints: (
+  small: 600px,
+  medium: 768px,
+  large: 1025px,
+  xlarge: 1200px,
+  xxlarge: 1500px
+);
+
+@mixin breakpoint($point) {
+  $width: map-get($breakpoints, $point);
+  @if $width {
+    @media (min-width: $width) { @content; }
+  }
+}

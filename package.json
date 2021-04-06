@@ -1,0 +1,10 @@
+{
+  "name": "scss-utils",
+  "version": "0.1.0",
+  "private": false,
+  "description": "SCSS mixins and helpers for breakpoints, vendor prefixes, z-index, typography, and intrinsic ratios",
+  "author": "Lars de Ridder <lars@xithing.io>",
+  "license": "MIT",
+  "files": ["scss"],
+  "style": "scss/index.scss"
+}
